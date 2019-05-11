@@ -1,31 +1,174 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using IR_Interface.Models
+@model Results
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+</head>
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form class="search-form">
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="form-group">
+                                <input name="Query" class="form-control" type="text" placeholder="Enter Query" value=@Model.Query>
+                            </div>
+
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group form-check">
+                                @*<input class="form-check-input" type="checkbox" id="soundex" name="soundex" value="false">*@
+                                @Html.CheckBox("soundex", new { htmlAttributes = new { @class = "form-check-input", id = "soundex" } })
+                                <label class="form-check-label" for="soundex">Soundex Search</label>
+                            </div>
+                            <div class="form-group form-check">
+                                @*<input class="form-check-input" type="checkbox" id="spelling" name="spelling" value="false">*@
+                                @Html.CheckBox("spelling", new { htmlAttributes = new { @class = "form-check-input", id = "spelling" } })
+                                <label class="form-check-label" for="spelling">Spelling Correction</label>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2  offset-md-4">
+                            <div class="form-group">
+                                <button class="btn btn-success btn-lg" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <br>
+        <br>
+
+        <h3 class="text-center"><i class="fas fa-search"></i> Search Results</h3>
+        <br>
+        <div class="row">
+            <div class="col-12">
+
+                <div class="url-results">
+                    <div class="container">
+                        @if (Model.Search)
+                        {
+                            foreach (var x in Model.SoundexSearch)
+                            {
+                                foreach (var y in x.Value)
+                                {
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <a href=@y.Item1 target="_blank">
+                                                @if (y.Item1.Length >= 40)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y.Item1.Substring(0, 40) <i>.......</i>
+                                                }                                                  
+                                                 @if (y.Item1.Length < 40)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y.Item1
+                                                }
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6 class="text-center">
+                                                <span><i class="fas fa-wave-square"></i> Freq = </span> <b>@y.Item2.ToString()</b>
+                                                <span>Word = </span> <b>@x.Key</b>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+
+                        }
+
+                    </div>
+                </div>
+                <br>
+                <h3 class="text-center"><i class="fas fa-search"></i> Did you mean</h3>
+                <br>
+                <div class="word-results">
+                    <div class="contanier">
+                        <div class="row">
+                            @if (Model.Spelling)
+                            {
+                                foreach (var x in Model.SpellCheck)
+                                {
+                                    foreach (var y in x.Value)
+                                    {
+                                        <div class="col-4">
+                                            <h6 class="text-center word">@y</h6>
+                                        </div>
+
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer></footer>
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+</script>
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+    footer {
+        margin-top: 5%;
+    }
+
+    .search-form {
+        margin-top: 5%;
+        padding: 1.5%;
+        border: 1.5px solid #eeeeee;
+        border-radius: 5px;
+    }
+
+    .url-results {
+        max-height: 290px;
+        overflow: auto;
+        padding: 2%;
+        width: 100%;
+        border: 1.5px solid #eeeeee;
+        border-radius: 5px;
+    }
+
+    .word-results {
+        max-height: 250px;
+        overflow: auto;
+        padding: 2%;
+        width: 100%;
+        border: 1.5px solid #eeeeee;
+        border-radius: 5px;
+    }
+
+    .word {
+        color: #007bff;
+        margin-bottom: 5%;
+        font-weight: bolder;
+    }
+</style>
+
