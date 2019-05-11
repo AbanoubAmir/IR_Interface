@@ -21,9 +21,14 @@ namespace IR_Interface.Controllers
             results.Query = Query;            
             Module3 module3 = new Module3();
             char[] delimiters = new char[] { '\r', '\n', ' ', ',' };
+            if(soundex==false && Query!="")
+            {
+                results.Search = "Multiple";
+                results.MultipleSearch = module3.multipleWordSearch(Query);
+            }
             if(soundex)
             {
-                results.Search = true;
+                results.Search = "Soundex";
                 string[] words = Query.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length > 1).ToArray();
                 results.SoundexSearch = module3.SoundexSearch(words);
             }

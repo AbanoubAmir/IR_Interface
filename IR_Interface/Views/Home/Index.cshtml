@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-9">
                             <div class="form-group">
-                                <input name="Query" class="form-control" type="text" placeholder="Enter Query" value=@Model.Query>
+                                <input name="Query" class="form-control" type="text" placeholder="Enter Query" value='@Model.Query'>
                             </div>
 
                         </div>
@@ -60,7 +60,43 @@
 
                 <div class="url-results">
                     <div class="container">
-                        @if (Model.Search)
+                        @if (Model.Search == "Multiple")
+                        {
+                            foreach (var x in Model.MultipleSearch)
+                            {
+                                foreach (var y in x.Value)
+                                {
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <a href=@y target="_blank">
+                                                @if (y.Length >= 40)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y.Substring(0, 40) <i>.......</i>
+                                                }
+                                                @if (y.Length < 40)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y
+                                                }
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6 class="text-center">
+                                                @if(x.Key==int.MaxValue)
+                                                {
+                                                <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>0</b>
+                                                }
+                                                @if(x.Key<int.MaxValue)
+                                                {
+                                                <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>@x.Key.ToString()</b>
+                                                }
+                                            </h6>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+                        }
+                        @if (Model.Search == "Soundex")
                         {
                             foreach (var x in Model.SoundexSearch)
                             {
@@ -72,8 +108,8 @@
                                                 @if (y.Item1.Length >= 40)
                                                 {
                                                     <i class="fas fa-caret-right"></i>@y.Item1.Substring(0, 40) <i>.......</i>
-                                                }                                                  
-                                                 @if (y.Item1.Length < 40)
+                                                }
+                                                @if (y.Item1.Length < 40)
                                                 {
                                                     <i class="fas fa-caret-right"></i>@y.Item1
                                                 }
