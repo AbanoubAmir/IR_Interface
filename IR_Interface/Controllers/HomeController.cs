@@ -1,6 +1,7 @@
 ﻿using IR_Interface.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -40,13 +41,27 @@ namespace IR_Interface.Controllers
             }
             return View(results);
         }
-        public ActionResult About()
+        public ActionResult About(string url="")
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            string connectionString = "Data Source=ABANOUB\\SQLEXPRESS;Initial Catalog=College;Integrated Security=True";
+            SqlConnection connection = new SqlConnection(connectionString);
+            string command = "select [Content] from Documents where URL=@parm1";
+            SqlCommand cmd = new SqlCommand(command, connection);
+            connection.Open();
+            SqlParameter par1 = new SqlParameter("@parm1", url);
+            cmd.Parameters.Add(par1);
+            string Content="";
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    Content = reader.GetString(0);
+                }
+            }
+            connection.Close();
+            return View(Content);
         }
-
+        
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

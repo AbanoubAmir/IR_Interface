@@ -68,7 +68,7 @@
                                 {
                                     <div class="row">
                                         <div class="col-8">
-                                            <a href=@y target="_blank">
+                                            <a href="@Url.Action("About", "Home",new { url = y })" target="_blank">
                                                 @if (y.Length >= 40)
                                                 {
                                                     <i class="fas fa-caret-right"></i>@y.Substring(0, 40) <i>.......</i>
@@ -104,7 +104,7 @@
                                 {
                                     <div class="row">
                                         <div class="col-8">
-                                            <a href=@y.Item1 target="_blank">
+                                            <a href="@Url.Action("About", "Home",new { url = y.Item1 })" target="_blank">
                                                 @if (y.Item1.Length >= 40)
                                                 {
                                                     <i class="fas fa-caret-right"></i>@y.Item1.Substring(0, 40) <i>.......</i>
