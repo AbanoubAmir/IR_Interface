@@ -379,7 +379,6 @@ namespace IR_Interface.Models
             }
 
 
-
             //Stemming using StemmersNet snowballs port
             List<Tuple<string, int>> Tokens_Stem = new List<Tuple<string, int>>();
             IStemmer stemmer = new EnglishStemmer();

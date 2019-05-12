@@ -57,15 +57,15 @@
         <br>
         <div class="row">
             <div class="col-12">
-
                 <div class="url-results">
                     <div class="container">
-                        @if (Model.Search == "Multiple")
+                        @if (Model.Search == "Exact")
                         {
-                            foreach (var x in Model.MultipleSearch)
+                            foreach (var x in Model.ExactSearch)
                             {
                                 foreach (var y in x.Value)
                                 {
+                                    if (y[0] == '+') { continue; }
                                     <div class="row">
                                         <div class="col-8">
                                             <a href="@Url.Action("About", "Home",new { url = y })" target="_blank">
@@ -81,13 +81,42 @@
                                         </div>
                                         <div class="col-4">
                                             <h6 class="text-center">
-                                                @if(x.Key==int.MaxValue)
+                                                <span><i class="fas fa-wave-square"></i> Occurence = </span> <b>@x.Key.ToString()</b>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                        @if (Model.Search == "Multiple")
+                        {
+                            foreach (var x in Model.MultipleSearch)
+                            {
+                                foreach (var y in x.Value)
+                                {
+                                    if (y[0] == '+') { continue; }
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <a href="@Url.Action("About", "Home",new { url = y })" target="_blank">
+                                                @if (y.Length >= 40)
                                                 {
-                                                <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>0</b>
+                                                    <i class="fas fa-caret-right"></i>@y.Substring(0, 40) <i>.......</i>
                                                 }
-                                                @if(x.Key<int.MaxValue)
+                                                @if (y.Length < 40)
                                                 {
-                                                <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>@x.Key.ToString()</b>
+                                                    <i class="fas fa-caret-right"></i>@y
+                                                }
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6 class="text-center">
+                                                @if (x.Key == int.MaxValue)
+                                                {
+                                                    <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>0</b>
+                                                }
+                                                @if (x.Key < int.MaxValue)
+                                                {
+                                                    <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>@x.Key.ToString()</b>
                                                 }
                                             </h6>
                                         </div>
@@ -105,11 +134,11 @@
                                     <div class="row">
                                         <div class="col-8">
                                             <a href="@Url.Action("About", "Home",new { url = y.Item1 })" target="_blank">
-                                                @if (y.Item1.Length >= 40)
+                                                @if (y.Item1.Length >= 41)
                                                 {
                                                     <i class="fas fa-caret-right"></i>@y.Item1.Substring(0, 40) <i>.......</i>
                                                 }
-                                                @if (y.Item1.Length < 40)
+                                                @if (y.Item1.Length < 41)
                                                 {
                                                     <i class="fas fa-caret-right"></i>@y.Item1
                                                 }
@@ -128,6 +157,78 @@
 
                         }
 
+                    </div>
+                </div>
+                <br>
+                <h3 class="text-center"><i class="fas fa-search"></i> Uncommon Search Results</h3>
+                <br>
+                <div class="url-results">
+                    <div class="container">
+                        @if (Model.Search == "Exact")
+                        {
+                            foreach (var x in Model.ExactSearch)
+                            {
+                                foreach (var y in x.Value)
+                                {
+                                    if (y[0] != '+') { continue; }
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <a href="@Url.Action("About", "Home",new { url = y.Substring(1) })" target="_blank">
+                                                @if (y.Length >= 41)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y.Substring(1, 40) <i>.......</i>
+                                                }
+                                                @if (y.Length < 41)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y.Substring(1)
+                                                }
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6 class="text-center">
+                                                <span><i class="fas fa-wave-square"></i> Occurence = </span> <b>@x.Key.ToString()</b>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+                        @if (Model.Search == "Multiple")
+                        {
+                            foreach (var x in Model.MultipleSearch)
+                            {
+                                foreach (var y in x.Value)
+                                {
+                                    if (y[0] != '+') { continue; }
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <a href="@Url.Action("About", "Home",new { url = y.Substring(1) })" target="_blank">
+                                                @if (y.Length >= 41)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y.Substring(1, 40) <i>.......</i>
+                                                }
+                                                @if (y.Length < 41)
+                                                {
+                                                    <i class="fas fa-caret-right"></i>@y.Substring(1)
+                                                }
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <h6 class="text-center">
+                                                @if (x.Key == int.MaxValue)
+                                                {
+                                                    <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>0</b>
+                                                }
+                                                @if (x.Key < int.MaxValue)
+                                                {
+                                                    <span><i class="fas fa-wave-square"></i> Min Distance = </span> <b>@x.Key.ToString()</b>
+                                                }
+                                            </h6>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
                     </div>
                 </div>
                 <br>

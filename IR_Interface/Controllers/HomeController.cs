@@ -19,10 +19,16 @@ namespace IR_Interface.Controllers
         public ActionResult Index(string Query, bool soundex, bool spelling)
         {
             Results results = new Results();
+            Query = Query.ToLower();
             results.Query = Query;            
             Module3 module3 = new Module3();
             char[] delimiters = new char[] { '\r', '\n', ' ', ',' };
-            if(soundex==false && Query!="")
+            if(Query.StartsWith("\"") && Query.EndsWith("\""))
+            {
+                results.Search = "Exact";
+                results.ExactSearch = module3.ExactSearch(Query.Substring(1,Query.Length-1));
+            }
+            else if(soundex==false && Query!="")
             {
                 results.Search = "Multiple";
                 results.MultipleSearch = module3.multipleWordSearch(Query);
@@ -59,7 +65,8 @@ namespace IR_Interface.Controllers
                 }
             }
             connection.Close();
-            return View(Content);
+            ViewBag.Content = Content;
+            return View();
         }
         
         public ActionResult Contact()

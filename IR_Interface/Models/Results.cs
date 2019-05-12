@@ -12,6 +12,7 @@ namespace IR_Interface.Models
         public string Query { get; set; }
         public SortedDictionary<int, List<string>> SpellCheck { get; set; }
         public SortedDictionary<int, List<string>> MultipleSearch { get; set; }
+        public SortedDictionary<int, List<string>> ExactSearch { get; set; }
 
         public Dictionary<string, List<Tuple<string, int>>> SoundexSearch { get; set; }
         public Results()
